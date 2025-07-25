@@ -18,6 +18,7 @@ class Strategy:
         self,
     ) -> None:
         self.we_active = False
+        self.num_point = 1
 
     def process(self, field: fld.Field) -> list[Optional[Action]]:
         """Game State Management"""
@@ -81,4 +82,31 @@ class Strategy:
         - actions[9] = Actions.BallGrab(0.0)
                 The robot number 9 grabs the ball at an angle of 0.0 (it looks to the right, along the OX axis)
         """
-        actions[2] = Actions.GoToPointIgnore((field.y_team[2].get_pos()), (field.ball.get_pos() - field.b_team[2].get_pos()).arg())
+        #actions[2] = Actions.GoToPointIgnore(aux.point_on_line(field.b_team[0].get_pos(), field.y_team[0].get_pos(), aux.dist(field.b_team[0].get_pos(), field.y_team[0].get_pos()) / 8 * 2), (field.y_team[0].get_pos()-field.b_team[2].get_pos()).arg())
+        #actions[2] = Actions.GoToPointIgnore((aux.rotate(aux.Point(500,0), (3.14 / 2)+ (time()/3) )+field.ball.get_pos()), (field.ball.get_pos()-field.b_team[2].get_pos()).arg())
+        
+
+        if self.num_point == 1:
+            x = aux.rotate(aux.Point(300,300), (3.14 / 4 * 4))+ field.b_team[0].get_pos() 
+        elif self.num_point == 2:
+            x = aux.rotate(aux.Point(300, 300), (3.14 / 4 * 2))+ field.b_team[0].get_pos()
+            
+        elif self.num_point == 3:
+            x = aux.rotate(aux.Point(300, 300), (3.14 / 4 * 1))+ field.b_team[0].get_pos()
+        elif self.num_point == 4:
+            x = aux.rotate(aux.Point(300, 300), (3.14 / 4 * 1))+ field.y_team[0].get_pos()
+        elif self.num_point == 5:
+            x = aux.rotate(aux.Point(300, 300), (3.14 / 4 * 2))+ field.b_team[0].get_pos()
+        elif self.num_point == 6:
+            x = aux.rotate(aux.Point(300, 300), (3.14 / 4 * 4))+ field.b_team[0].get_pos()
+
+        actions[2] = Actions.GoToPointIgnore(x, (field.ball.get_pos()-field.b_team[2].get_pos()).arg())
+        
+
+
+        if aux.dist(x, field.b_team[2].get_pos()) < 400:
+            self.num_point += 1
+        if self.num_point == 7:
+            self.num_point = 1
+
+        
