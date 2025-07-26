@@ -19,6 +19,18 @@ class Strategy:
     ) -> None:
         self.we_active = False
         self.num_point = 1
+        self.dist = 5000
+        self.Point0 = 0
+        self.Point1 = 0
+        self.Point2 = 0
+        self.Point3 = 0
+        self.Point4 = 0
+        self.Point5 = 0
+        self.Point6 = 0
+        self.Point7 = 0
+        self.Point8 = 0
+        self.Point9 = 0
+
 
     def process(self, field: fld.Field) -> list[Optional[Action]]:
         """Game State Management"""
@@ -85,7 +97,7 @@ class Strategy:
         #actions[2] = Actions.GoToPointIgnore(aux.point_on_line(field.b_team[0].get_pos(), field.y_team[0].get_pos(), aux.dist(field.b_team[0].get_pos(), field.y_team[0].get_pos()) / 8 * 2), (field.y_team[0].get_pos()-field.b_team[2].get_pos()).arg())
         #actions[2] = Actions.GoToPointIgnore((aux.rotate(aux.Point(500,0), (3.14 / 2)+ (time()/3) )+field.ball.get_pos()), (field.ball.get_pos()-field.b_team[2].get_pos()).arg())
         
-        
+        '''
         if self.num_point == 1:
             if aux.dist(aux.nearest_point_in_poly(field.b_team[2].get_pos(), field.ally_goal.hull), field.b_team[2].get_pos()) < aux.dist(aux.nearest_point_in_poly(field.b_team[2].get_pos(), field.enemy_goal.hull), field.b_team[2].get_pos()):
                 actions[2] = Actions.GoToPointIgnore(aux.nearest_point_in_poly(field.b_team[2].get_pos(), field.ally_goal.hull), 0)
@@ -100,6 +112,27 @@ class Strategy:
 
         if aux.dist(field.ball.get_pos(), field.b_team[2].get_pos()) < 200:
             self.num_point = 1
+        '''
+        self.Point0 = field.y_team[0].get_pos()
+        self.Point1 = aux.rotate(aux.Point(self.dist, 0), (field.y_team[0].get_angle())) + field.y_team[0].get_pos()
 
-        
-        
+        self.Point2 = field.b_team[0].get_pos()
+        self.Point3 = aux.rotate(aux.Point(self.dist, 0), (field.b_team[0].get_angle())) + field.b_team[0].get_pos()
+
+        self.Point4 = field.y_team[4].get_pos()
+        self.Point5 = aux.rotate(aux.Point(self.dist, 0), (field.y_team[4].get_angle())) + field.y_team[4].get_pos()
+
+        field.strategy_image.draw_line(self.Point0, self.Point1, (0, 0, 0), 15)
+        field.strategy_image.draw_line(self.Point2, self.Point3, (0, 0, 0), 15)
+        field.strategy_image.draw_line(self.Point4, self.Point5, (0, 0, 0), 15)
+
+        self.Point6 = aux.get_line_intersection(self.Point0, self.Point1, self.Point2, self.Point3, "LL")
+        self.Point7 = aux.get_line_intersection(self.Point0, self.Point1, self.Point4, self.Point5, "LL")
+        self.Point8 = aux.get_line_intersection(self.Point4, self.Point5, self.Point2, self.Point3, "LL")
+
+        if self.Point6 is not None:
+            field.strategy_image.draw_circle(self.Point6, (255, 0, 0), 20)
+        if self.Point7 is not None:
+            field.strategy_image.draw_circle(self.Point7, (255, 0, 0), 20)
+        if self.Point8 is not None:
+            field.strategy_image.draw_circle(self.Point8, (255, 0, 0), 20)
