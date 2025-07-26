@@ -130,9 +130,18 @@ class Strategy:
         self.Point7 = aux.get_line_intersection(self.Point0, self.Point1, self.Point4, self.Point5, "LL")
         self.Point8 = aux.get_line_intersection(self.Point4, self.Point5, self.Point2, self.Point3, "LL")
 
+
         if self.Point6 is not None:
             field.strategy_image.draw_circle(self.Point6, (255, 0, 0), 20)
         if self.Point7 is not None:
             field.strategy_image.draw_circle(self.Point7, (255, 0, 0), 20)
         if self.Point8 is not None:
             field.strategy_image.draw_circle(self.Point8, (255, 0, 0), 20)
+
+        if self.Point6 is not None and self.Point7 is not None and self.Point8 is not None:
+            self.Point9 = (self.Point6 + self.Point8 + self.Point7)/3
+        if self.Point9 is not None:
+            #field.strategy_image.draw_circle(self.Point9, (255, 255, 255), 10)
+            actions[2] = Actions.GoToPointIgnore(self.Point9, 0)
+        
+
