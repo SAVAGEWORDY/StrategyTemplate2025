@@ -85,29 +85,21 @@ class Strategy:
         #actions[2] = Actions.GoToPointIgnore(aux.point_on_line(field.b_team[0].get_pos(), field.y_team[0].get_pos(), aux.dist(field.b_team[0].get_pos(), field.y_team[0].get_pos()) / 8 * 2), (field.y_team[0].get_pos()-field.b_team[2].get_pos()).arg())
         #actions[2] = Actions.GoToPointIgnore((aux.rotate(aux.Point(500,0), (3.14 / 2)+ (time()/3) )+field.ball.get_pos()), (field.ball.get_pos()-field.b_team[2].get_pos()).arg())
         
-        '''
-        if self.num_point == 1:
-            x = aux.rotate(aux.Point(300,300), (3.14 / 4 * 4))+ field.b_team[0].get_pos() 
-        elif self.num_point == 2:
-            x = aux.rotate(aux.Point(300, 300), (3.14 / 4 * 2))+ field.b_team[0].get_pos()
-            
-        elif self.num_point == 3:
-            x = aux.rotate(aux.Point(300, 300), (3.14 / 4 * 1))+ field.b_team[0].get_pos()
-        elif self.num_point == 4:
-            x = aux.rotate(aux.Point(300, 300), (3.14 / 4 * 1))+ field.y_team[0].get_pos()
-        elif self.num_point == 5:
-            x = aux.rotate(aux.Point(300, 300), (3.14 / 4 * 2))+ field.b_team[0].get_pos()
-        elif self.num_point == 6:
-            x = aux.rotate(aux.Point(300, 300), (3.14 / 4 * 4))+ field.b_team[0].get_pos()
-
-       
         
+        if self.num_point == 1:
+            if aux.dist(aux.nearest_point_in_poly(field.b_team[2].get_pos(), field.ally_goal.hull), field.b_team[2].get_pos()) < aux.dist(aux.nearest_point_in_poly(field.b_team[2].get_pos(), field.enemy_goal.hull), field.b_team[2].get_pos()):
+                actions[2] = Actions.GoToPointIgnore(aux.nearest_point_in_poly(field.b_team[2].get_pos(), field.ally_goal.hull), 0)
+            else:
+                actions[2] = Actions.GoToPointIgnore(aux.nearest_point_in_poly(field.b_team[2].get_pos(), field.enemy_goal.hull), 0)
 
+        if aux.dist(aux.nearest_point_in_poly(field.b_team[2].get_pos(), field.ally_goal.hull), field.b_team[2].get_pos()) < 150 or aux.dist(aux.nearest_point_in_poly(field.b_team[2].get_pos(), field.enemy_goal.hull), field.b_team[2].get_pos()) < 150:
+            self.num_point = 2
 
-        if aux.dist(x, field.b_team[2].get_pos()) < 400:
-            self.num_point += 1
-        if self.num_point == 7:
+        if self.num_point == 2:
+            actions[2] = Actions.GoToPointIgnore(field.ball.get_pos(), 0)
+
+        if aux.dist(field.ball.get_pos(), field.b_team[2].get_pos()) < 200:
             self.num_point = 1
-        '''
-        actions[2] = Actions.GoToPointIgnore(field.ball.get_pos(), (field.ball.get_pos()-field.b_team[2].get_pos()).arg())
+
+        
         
