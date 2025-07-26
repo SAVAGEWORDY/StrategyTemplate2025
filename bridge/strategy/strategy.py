@@ -112,7 +112,7 @@ class Strategy:
 
         if aux.dist(field.ball.get_pos(), field.b_team[2].get_pos()) < 200:
             self.num_point = 1
-        '''
+        '
         self.Point0 = field.y_team[0].get_pos()
         self.Point1 = aux.rotate(aux.Point(self.dist, 0), (field.y_team[0].get_angle())) + field.y_team[0].get_pos()
 
@@ -143,5 +143,26 @@ class Strategy:
         if self.Point9 is not None:
             #field.strategy_image.draw_circle(self.Point9, (255, 255, 255), 10)
             actions[2] = Actions.GoToPointIgnore(self.Point9, 0)
+        '''
+        self.Point0 = field.b_team[0].get_pos()
+        self.Point1 = field.ball.get_pos()
+
+        self.Point2 = field.y_team[0].get_pos()
+        self.Point3 = field.y_team[5].get_pos()
+
+        self.Point4 = (self.Point1-self.Point0).unity()*1000 + field.ball.get_pos()
+
+        field.strategy_image.draw_line(self.Point0, self.Point2, (255, 255, 0), 10)
+        field.strategy_image.draw_line(self.Point0, self.Point3, (255, 255, 0), 10)
+
+        self.Point5 = aux.closest_point_on_line(self.Point1, self.Point3, self.Point4, "L")
+
+        field.strategy_image.draw_line(self.Point4, self.Point5, (255, 255, 0), 15)
+        self.Point6 = aux.closest_point_on_line(self.Point0, self.Point2, self.Point4, "L")
+        field.strategy_image.draw_line(self.Point4, self.Point6, (255, 0, 255), 30)
+        if aux.dist(self.Point4, self.Point6):
+            actions[2] = Actions.GoToPointIgnore(self.Point6, 0)
+        else:
+            actions[2] = Actions.GoToPointIgnore(self.Point5, 0)
         
 
