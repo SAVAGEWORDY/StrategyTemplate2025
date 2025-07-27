@@ -143,7 +143,7 @@ class Strategy:
         if self.Point9 is not None:
             #field.strategy_image.draw_circle(self.Point9, (255, 255, 255), 10)
             actions[2] = Actions.GoToPointIgnore(self.Point9, 0)
-        '''
+        
         self.Point0 = field.b_team[0].get_pos()
         self.Point1 = field.ball.get_pos()
 
@@ -160,9 +160,19 @@ class Strategy:
         field.strategy_image.draw_line(self.Point4, self.Point5, (255, 255, 0), 15)
         self.Point6 = aux.closest_point_on_line(self.Point0, self.Point2, self.Point4, "L")
         field.strategy_image.draw_line(self.Point4, self.Point6, (255, 0, 255), 30)
-        if aux.dist(self.Point4, self.Point6):
+        if aux.dist(self.Point4, self.Point6)>aux.dist(self.Point4, self.Point5):
             actions[2] = Actions.GoToPointIgnore(self.Point6, 0)
         else:
             actions[2] = Actions.GoToPointIgnore(self.Point5, 0)
+        '''
+
+
+#def choose_angle(field:fld.Field, actions: list[Action]) -> None:
+        if aux.dist(field.y_team[1].get_pos(), field.enemy_goal.up) > aux.dist(field.y_team[2].get_pos(), field.enemy_goal.down):
+            actions[2] = Actions.Kick(aux.Point(0,-100)+field.enemy_goal.up)
+        else:
+            actions[2] = Actions.Kick(aux.Point(0, 100)+field.enemy_goal.down)
+
+        
         
 
