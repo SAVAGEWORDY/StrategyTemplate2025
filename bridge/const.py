@@ -56,7 +56,7 @@ SELF_PLAY = False
 DEBUG_HALF = 0  # 1 = +x, -1 = -x, 0 = not debug
 
 GK = 5
-ENEMY_GK = 5
+ENEMY_GK = 1
 
 ROBOTS_MAX_COUNT: int = 32
 TEAM_ROBOTS_MAX_COUNT: int = ROBOTS_MAX_COUNT // 2

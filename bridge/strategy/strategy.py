@@ -165,13 +165,53 @@ class Strategy:
         else:
             actions[2] = Actions.GoToPointIgnore(self.Point5, 0)
         '''
-
-
-#def choose_angle(field:fld.Field, actions: list[Action]) -> None:
-        if aux.dist(field.y_team[1].get_pos(), field.enemy_goal.up) > aux.dist(field.y_team[2].get_pos(), field.enemy_goal.down):
-            actions[2] = Actions.Kick(aux.Point(0,-100)+field.enemy_goal.up)
+        if field.ally_color == const.Color.BLUE:
+            if aux.dist(field.y_team[1].get_pos(), field.enemy_goal.up) > aux.dist(field.y_team[1].get_pos(), field.enemy_goal.down):
+                actions[2] = Actions.Kick(aux.Point(0,-75)+field.enemy_goal.up)
+            else:
+                actions[2] = Actions.Kick(aux.Point(0, 75)+field.enemy_goal.down)
+            
         else:
-            actions[2] = Actions.Kick(aux.Point(0, 100)+field.enemy_goal.down)
+            self.Point0 = field.b_team[2].get_pos()
+            self.Point1 = field.ball.get_pos()
+
+            self.Point7 = (self.Point1 - self.Point0).unity() * 1000 + field.ball.get_pos()
+
+            self.Point2 = field.ally_goal.up - aux.Point(0, 100)
+            self.Point3 = field.ally_goal.down - aux.Point(0, -100)
+
+            #field.strategy_image.draw_line(self.Point0, self.Point2, (255, 255, 0), 10)
+            #field.strategy_image.draw_line(self.Point0, self.Point3, (255, 255, 0), 10)
+
+            self.Point5 = aux.closest_point_on_line(self.Point0, self.Point2, self.Point7, "L")
+
+            #field.strategy_image.draw_line(self.Point4, self.Point5, (255, 255, 0), 15)
+
+            self.Point6 = aux.closest_point_on_line(self.Point0, self.Point3, self.Point7, "L")
+
+            #field.strategy_image.draw_line(self.Point4, self.Point6, (255, 0, 255), 30)
+
+            if aux.dist(self.Point7, self.Point5)>aux.dist(self.Point7, self.Point6):
+                actions[1] = Actions.GoToPointIgnore(self.Point6, 0)
+            else:
+                actions[1] = Actions.GoToPointIgnore(self.Point5, 0)
+            
+            
+            '''
+            self.Point1 = field.ball.get_pos()
+            self.Point2 = ((self.Point1 - self.Point0).unity()*500+field.ball.get_pos())
+            self.Point3 = aux.nearest_point_in_poly(self.Point2, field.ally_goal.hull)
+            '''
+            
+            
+        
+        '''
+        if aux.dist(field.y_team[1].get_pos(), field.enemy_goal.up) > aux.dist(field.y_team[1].get_pos(), field.enemy_goal.down):
+            actions[2] = Actions.Kick(aux.Point(0,-75)+field.enemy_goal.up)
+        else:
+            actions[2] = Actions.Kick(aux.Point(0, 75)+field.enemy_goal.down)
+        '''
+        
 
         
         
