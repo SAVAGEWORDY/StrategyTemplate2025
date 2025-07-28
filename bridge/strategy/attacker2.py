@@ -16,11 +16,11 @@ class Attacker2:
         actions[2] = Actions.GoToPoint(aux.Point(500,800), (field.b_team[1].get_pos() - field.b_team[2].get_pos()).arg())
 
     def kick_b(self, field: fld.Field, actions: list[Optional[Action]]) -> None:
-        if aux.dist(field.b_team[2].get_pos(), field.ball.get_pos()) < 250:
+        if aux.dist(field.b_team[2].get_pos(), field.ball.get_pos()) < 400:
             if aux.dist(self.GK, field.enemy_goal.down) > aux.dist(self.GK, field.enemy_goal.up): 
-                actions[2] = Actions.Kick(field.enemy_goal.down - aux.Point(0, -75))
+                actions[2] = Actions.Kick(field.enemy_goal.down - aux.Point(0, -100))
             else:
-                actions[2] = Actions.Kick(field.enemy_goal.up - aux.Point(0, 75))
+                actions[2] = Actions.Kick(field.enemy_goal.up - aux.Point(0, 100))
         else:
             field.strategy_image.send_telemetry("krhwsdhjgvbs", "ukdfsjgcbku")
 
@@ -95,6 +95,6 @@ class Attacker2:
         #field.strategy_image.draw_line(self.Point4, self.Point6, (255, 0, 255), 30)
 
         if aux.dist(self.Point7, self.Point5)>aux.dist(self.Point7, self.Point6):
-            actions[1] = Actions.GoToPoint(self.Point6, 0)
+            actions[2] = Actions.GoToPoint(self.Point6, 0)
         else:
-            actions[1] = Actions.GoToPoint  (self.Point5, 0)
+            actions[2] = Actions.GoToPoint(self.Point5, 0)

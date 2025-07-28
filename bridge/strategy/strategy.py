@@ -156,6 +156,7 @@ class Strategy:
         field.strategy_image.draw_line(self.Point0, self.Point2, (255, 255, 0), 10)
         field.strategy_image.draw_line(self.Point0, self.Point3, (255, 255, 0), 10)
 
+remote: Resolving deltas: 100% (4/4), completed with 4 local objects.
         self.Point5 = aux.closest_point_on_line(self.Point1, self.Point3, self.Point4, "L")
 
         field.strategy_image.draw_line(self.Point4, self.Point5, (255, 255, 0), 15)
