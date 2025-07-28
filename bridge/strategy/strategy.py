@@ -170,11 +170,16 @@ class Strategy:
         if field.ally_color == const.Color.BLUE:
             self.attacker2.checker_b(field)
             self.attacker2.go_b(field, actions)
+            if aux.dist(field.b_team[1].get_pos(), field.ball.get_pos()) < 250:
+                actions[1] = Actions.Kick(field.b_team[2].get_pos())
+            else:
+                actions[1] = Actions.GoToPoint(aux.Point(0,0), (field.b_team[0].get_pos() - field.b_team[1].get_pos()).arg())
             self.attacker2.kick_b(field, actions)          
         else:
             self.attacker2.checker_y(field)
             self.attacker2.go_y(field, actions)
             self.attacker2.kick_y(field, actions)
+
 
         
             '''
