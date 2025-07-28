@@ -6,15 +6,45 @@ from bridge import const
 from bridge.auxiliary import aux, fld, rbt  # type: ignore
 from bridge.const import State as GameStates
 from bridge.router.base_actions import Action, Actions, KickActions  # type: ignore
+
+
 class Attacker2:
-    def kick(self, field: fld.Field, actions: list[Optional[Action]]) -> None:
+    def __init__(self) -> None:
+        self.GK = aux.Point(0,0)
+
+    def go_b(self, field:fld.Field, actions: list[Optional[Action]]) -> None:
+        actions[2] = Actions.GoToPoint(aux.Point(500,800), (field.b_team[1].get_pos() - field.b_team[2].get_pos()).arg())
+    def kick_b(self, field: fld.Field, actions: list[Optional[Action]]) -> None:
         if aux.dist(field.b_team[2].get_pos(), field.ball.get_pos()) < 150:
-            if aux.dist(field.y_team[0].get_pos(), field.enemy_goal.down) > aux.dist(field.y_team[0].get_pos(), field.enemy_goal.up): 
+            if aux.dist(self.GK, field.enemy_goal.down) > aux.dist(self.GK, field.enemy_goal.up): 
                 actions[2] = Actions.Kick(field.enemy_goal.down - aux.Point(0, -75))
             else:
                 actions[2] = Actions.Kick(field.enemy_goal.up - aux.Point(0, 75))
         else:
-            self.Point0 = field.b_team[2].get_pos()
+            field.strategy_image.send_telemetry("krhwsdhjgvbs", "ukdfsjgcbku")
+
+    def checker_b(self, field:fld.Field) -> None:
+        for i in range(0, 3):
+            if aux.nearest_point_in_poly(field.y_team[i].get_pos(), field.enemy_goal.hull) == field.y_team[i].get_pos():
+                self.GK = field.y_team[i].get_pos()
+                field.strategy_image.send_telemetry("enemy_gk", str(i))
+
+    def checker_y(self, field:fld.Field) -> None:
+        for i in range(0, 3):
+            if aux.nearest_point_in_poly(field.b_team[i].get_pos(), field.enemy_goal.hull) == field.b_team[i].get_pos():
+                self.GK = field.b_team[i].get_pos()
+                field.strategy_image.send_telemetry("enemy_gk", str(i))
+
+    def go_y(self, field:fld.Field, actions: list[Optional[Action]]) -> None:
+        actions[2] = Actions.GoToPoint(aux.Point(-500,-800), (field.y_team[1].get_pos() - field.y_team[2].get_pos()).arg())
+    def kick_y(self, field: fld.Field, actions: list[Optional[Action]]) -> None:
+        if aux.dist(field.y_team[2].get_pos(), field.ball.get_pos()) < 150:
+            if aux.dist(self.GK, field.enemy_goal.down) > aux.dist(self.GK, field.enemy_goal.up): 
+                actions[2] = Actions.Kick(field.enemy_goal.down - aux.Point(0, -75))
+            else:
+                actions[2] = Actions.Kick(field.enemy_goal.up - aux.Point(0, 75))
+        else:
+            self.Point0 = field.y_team[2].get_pos()
             self.Point1 = field.ball.get_pos()
 
             self.Point7 = (self.Point1 - self.Point0).unity() * 300
@@ -39,7 +69,7 @@ class Attacker2:
                 actions[2] = Actions.GoToPoint(self.Point5, (field.ball.get_pos()-field.b_team[2].get_pos()).arg())
 
 
-    def pressing(self, field:fld.Field, actions: list[Optional[Action]]) -> None:
+    def pressing_b(self, field:fld.Field, actions: list[Optional[Action]]) -> None:
         self.Point0 = field.b_team[2].get_pos()
         self.Point1 = field.ball.get_pos()
 
@@ -60,6 +90,6 @@ class Attacker2:
         #field.strategy_image.draw_line(self.Point4, self.Point6, (255, 0, 255), 30)
 
         if aux.dist(self.Point7, self.Point5)>aux.dist(self.Point7, self.Point6):
-            actions[1] = Actions.GoToPointIgnore(self.Point6, 0)
+            actions[1] = Actions.GoToPoint(self.Point6, 0)
         else:
-            actions[1] = Actions.GoToPointIgnore(self.Point5, 0)
+            actions[1] = Actions.GoToPoint  (self.Point5, 0)

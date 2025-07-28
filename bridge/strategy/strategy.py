@@ -168,11 +168,14 @@ class Strategy:
         '''
         
         if field.ally_color == const.Color.BLUE:
-            actions[1] = Actions.Kick(field.b_team[2].get_pos())
-            self.attacker2.kick(field, actions)
-           
-            
+            self.attacker2.checker_b(field)
+            self.attacker2.go_b(field, actions)
+            self.attacker2.kick_b(field, actions)          
         else:
+            self.attacker2.checker_y(field)
+            self.attacker2.go_y(field, actions)
+            self.attacker2.kick_y(field, actions)
+
         
             '''
              if aux.dist(field.y_team[0].get_pos(), field.enemy_goal.down) > aux.dist(field.y_team[0].get_pos(), field.enemy_goal.up): 
