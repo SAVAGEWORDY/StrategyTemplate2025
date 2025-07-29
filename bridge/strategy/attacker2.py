@@ -13,17 +13,14 @@ class Attacker2:
         self.GK = aux.Point(0,0)
         self.attacker2 = 2
 
-    def go_b(self, field:fld.Field, actions: list[Optional[Action]]) -> None:
-        actions[self.attacker2] = Actions.GoToPoint(aux.Point(500*field.polarity,800*field.polarity), (field.b_team[1].get_pos() - field.b_team[self.attacker2].get_pos()).arg())
-
     def kick_b(self, field: fld.Field, actions: list[Optional[Action]]) -> None:
-        if aux.dist(field.b_team[self.attacker2].get_pos(), field.ball.get_pos()) < 400:
-            if aux.dist(self.GK, field.enemy_goal.down) > aux.dist(self.GK, field.enemy_goal.up): 
-                actions[self.attacker2] = Actions.Kick(field.enemy_goal.down - aux.Point(0, 100*field.polarity))
+            if aux.dist(field.ball.get_pos(), aux.Point(300,0)) > 0:
+                if aux.dist(self.GK, field.enemy_goal.down) > aux.dist(self.GK, field.enemy_goal.up): 
+                    actions[self.attacker2] = Actions.Kick(field.enemy_goal.up - aux.Point(0, 100*field.polarity))
+                else:
+                    actions[self.attacker2] = Actions.Kick(field.enemy_goal.down - aux.Point(0, -100*field.polarity))
             else:
-                actions[self.attacker2] = Actions.Kick(field.enemy_goal.up - aux.Point(0, -100*field.polarity))
-        else:
-            field.strategy_image.send_telemetry("krhwsdhjgvbs", "ukdfsjgcbku")
+                actions[self.attacker2] = Actions.GoToPoint(aux.Point(-1100*field.polarity,-800*field.polarity), (field.b_team[1].get_pos() - field.b_team[self.attacker2].get_pos()).arg())
 
     def checker_b(self, field:fld.Field) -> None:
         for i in range(0, 3):

@@ -181,7 +181,6 @@ remote: Resolving deltas: 100% (4/4), completed with 4 local objects.
         
         if field.ally_color == const.Color.BLUE:
             self.attacker2.checker_b(field)
-            self.attacker2.go_b(field, actions)
             self.attacker2.kick_b(field, actions)
             #actions[1] = Actions.GoToPoint(aux.Point(-450, 330), 0)  
         else:
