@@ -56,11 +56,22 @@ class Strategy:
             case GameStates.HALT:
                 return [None] * const.TEAM_ROBOTS_MAX_COUNT
             case GameStates.PREPARE_PENALTY:
-                pass
+                if self.we_active == True:
+                    actions[1] = Actions.GoToPoint(aux.Point(-500*field.polarity, 0), 0)
+                    actions[2] = Actions.GoToPoint(aux.Point(-50*field.polarity, 0), 0)
+                else:
+                    #self.GoalKeeper.go(field, actions)
+                    pass
             case GameStates.PENALTY:
-                pass
+                if self.we_active == True:
+                    actions[2] = Actions.Kick(field.enemy_goal.up - aux.Point(0, 75))
+                else:
+                    #self.GoalKeeper.go(field, actions)
+                    pass
             case GameStates.PREPARE_KICKOFF:
-                pass
+                if self.we_active == False:
+                    #self.GoalKeeper.go(field, actions)
+                    actions[1] = Actions.GoToPoint(aux.Point((-400)*field.polarity, 200), 0)
             case GameStates.KICKOFF:
                 pass
             case GameStates.FREE_KICK:
@@ -171,11 +182,8 @@ remote: Resolving deltas: 100% (4/4), completed with 4 local objects.
         if field.ally_color == const.Color.BLUE:
             self.attacker2.checker_b(field)
             self.attacker2.go_b(field, actions)
-            if aux.dist(field.b_team[1].get_pos(), field.ball.get_pos()) < 250:
-                actions[1] = Actions.Kick(field.b_team[2].get_pos())
-            else:
-                actions[1] = Actions.GoToPoint(aux.Point(0,0), (field.b_team[0].get_pos() - field.b_team[1].get_pos()).arg())
-            self.attacker2.kick_b(field, actions)          
+            self.attacker2.kick_b(field, actions)
+            #actions[1] = Actions.GoToPoint(aux.Point(-450, 330), 0)  
         else:
             self.attacker2.checker_y(field)
             self.attacker2.go_y(field, actions)
