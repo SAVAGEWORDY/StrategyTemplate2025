@@ -14,22 +14,23 @@ class Attacker2:
         self.attacker2 = 2
 
     def kick_b(self, field: fld.Field, actions: list[Optional[Action]]) -> None:
-            if aux.dist(field.ball.get_pos(), aux.Point(300,0)) > 0:
-                if aux.dist(self.GK, field.enemy_goal.down) > aux.dist(self.GK, field.enemy_goal.up): 
-                    actions[self.attacker2] = Actions.Kick(field.enemy_goal.up - aux.Point(0, 100*field.polarity))
-                else:
-                    actions[self.attacker2] = Actions.Kick(field.enemy_goal.down - aux.Point(0, -100*field.polarity))
-            else:
+            if aux.nearest_point_in_poly(field.ball.get_pos(), [aux.Point(0, -800), aux.Point(0, 800), aux.Point(2250 * field.polarity, 800), aux.Point(2250 * field.polarity, -800)]) == field.ball.get_pos():
                 actions[self.attacker2] = Actions.GoToPoint(aux.Point(-1100*field.polarity,-800*field.polarity), (field.b_team[1].get_pos() - field.b_team[self.attacker2].get_pos()).arg())
+            else:
+                if aux.dist(self.GK, field.enemy_goal.down) > aux.dist(self.GK, field.enemy_goal.up): 
+                    actions[self.attacker2] = Actions.Kick(field.enemy_goal.up - aux.Point(0, -100*field.polarity))
+                else:
+                    actions[self.attacker2] = Actions.Kick(field.enemy_goal.down - aux.Point(0, 100*field.polarity))
+                
 
     def checker_b(self, field:fld.Field) -> None:
-        for i in range(0, 3):
+        for i in range(0, 10):
             if aux.nearest_point_in_poly(field.y_team[i].get_pos(), field.enemy_goal.hull) == field.y_team[i].get_pos():
                 self.GK = field.y_team[i].get_pos()
                 field.strategy_image.send_telemetry("enemy_gk", str(i))
 
     def checker_y(self, field:fld.Field) -> None:
-        for i in range(0, 3):
+        for i in range(0, 10):
             if aux.nearest_point_in_poly(field.b_team[i].get_pos(), field.enemy_goal.hull) == field.b_team[i].get_pos():
                 self.GK = field.b_team[i].get_pos()
                 field.strategy_image.send_telemetry("enemy_gk", str(i))
